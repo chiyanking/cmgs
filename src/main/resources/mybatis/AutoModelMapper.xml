@@ -1,0 +1,282 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.zstu.bysj.cmgs.dao.AutoModelMapper">
+
+	<resultMap id="BaseResultMap" type="com.zstu.bysj.cmgs.model.entity.AutoModel">
+		<id column="id" property="id" jdbcType="INTEGER"/>
+		<result column="series_id" property="seriesId" jdbcType="INTEGER"/>
+		<result column="auto_home_id" property="autoHomeId" jdbcType="INTEGER"/>
+		<result column="name" property="name" jdbcType="VARCHAR"/>
+		<result column="guide_price" property="guidePrice" jdbcType="DECIMAL"/>
+		<result column="img_url" property="imgUrl" jdbcType="VARCHAR"/>
+		<result column="car_size" property="carSize" jdbcType="VARCHAR"/>
+		<result column="car_doors" property="carDoors" jdbcType="INTEGER"/>
+		<result column="car_seats" property="carSeats" jdbcType="INTEGER"/>
+		<result column="displacement" property="displacement" jdbcType="DECIMAL"/>
+		<result column="car_horsepower" property="carHorsepower" jdbcType="DECIMAL"/>
+		<result column="car_engine_type" property="carEngineType" jdbcType="VARCHAR"/>
+		<result column="car_driving_way" property="carDrivingWay" jdbcType="VARCHAR"/>
+		<result column="owner_fuel_consumption" property="ownerFuelConsumption" jdbcType="DECIMAL"/>
+		<result column="combined_fuel_consumption" property="combinedFuelConsumption" jdbcType="DECIMAL"/>
+		<result column="owner_score" property="ownerScore" jdbcType="DECIMAL"/>
+		<result column="vehicle_warranty" property="vehicleWarranty" jdbcType="VARCHAR"/>
+		<result column="transmission" property="transmission" jdbcType="VARCHAR"/>
+		<result column="is_turbo" property="isTurbo" jdbcType="INTEGER"/>
+		<result column="car_value" property="carValue" jdbcType="DECIMAL"/>
+		<result column="front_tyre_size" property="frontTyreSize" jdbcType="VARCHAR"/>
+		<result column="rear_tyre_size" property="rearTyreSize" jdbcType="VARCHAR"/>
+		<result column="model_wash_type" property="modelWashType" jdbcType="INTEGER"/>
+		<result column="wash_type" property="washType" jdbcType="INTEGER"/>
+		<result column="is_valid" property="isValid" jdbcType="INTEGER"/>
+		<result column="create_time" property="createTime" jdbcType="TIMESTAMP"/>
+		<result column="modify_time" property="modifyTime" jdbcType="TIMESTAMP"/>
+	</resultMap>
+
+	<select id="findList" resultMap="BaseResultMap">
+		select * from car_model
+		where series_id=#{search.seriesId}
+		<if test="search.name!=null and search.name.length()>0">
+			and name like concat("%",#{search.name},"%")
+		</if>
+		<if test="search.displacement!=null and search.displacement.length()>0">
+			and displacement=#{search.displacement}
+		</if>
+		<if test="search.carEngineType!=null and search.carEngineType.length()>0">
+			and car_engine_type=#{search.carEngineType}
+		</if>
+		<if test="start != null and pageSize != null">
+			<include refid="page"></include>
+		</if>
+	</select>
+
+	<select id="findCount" resultType="int">
+		select count(*) from car_model
+		WHERE series_id=#{search.seriesId}
+		<if test="search.name!=null and search.name.length()>0">
+			and name like concat("%",#{search.name},"%")
+		</if>
+		<if test="search.displacement!=null and search.displacement.length()>0">
+			and displacement=#{search.displacement}
+		</if>
+		<if test="search.carEngineType!=null and search.carEngineType.length()>0">
+			and car_engine_type=#{search.carEngineType}
+		</if>
+	</select>
+
+	<select id="findById" resultMap="BaseResultMap" parameterType="int">
+		SELECT *
+		FROM car_model
+		WHERE id = #{id,jdbcType=INTEGER}
+	</select>
+
+	<select id="findByAutoHomeId" resultMap="BaseResultMap" parameterType="int">
+		SELECT *
+		FROM car_model
+		WHERE auto_home_id = #{autoHomeId,jdbcType=INTEGER}
+	</select>
+
+	<insert id="insert" parameterType="com.zstu.bysj.cmgs.model.entity.AutoModel"
+		useGeneratedKeys="true" keyProperty="id">
+		INSERT INTO car_model
+		(
+			auto_home_id,
+			series_id,
+			`name`,
+			guide_price,
+			displacement,
+			car_horsepower,
+			car_engine_type,
+			car_value,
+			car_seats,
+			front_tyre_size,
+			rear_tyre_size,
+			model_wash_type,
+			wash_type,
+			create_time,
+			modify_time
+		)
+		values (
+			#{autoHomeId,jdbcType=INTEGER},
+			#{seriesId,jdbcType=INTEGER},
+			#{name,jdbcType=VARCHAR},
+			#{guidePrice,jdbcType=DECIMAL},
+			#{displacement},
+			#{carHorsepower},
+			#{carEngineType},
+			#{carValue},
+			#{carSeats},
+			#{frontTyreSize},
+			#{rearTyreSize},
+			#{modelWashType},
+			#{washType},
+			now(),
+			now()
+		)
+	</insert>
+
+	<update id="update">
+		UPDATE car_model
+		<set>
+			<if test="autoHomeId != null">
+				auto_home_id = #{autoHomeId,jdbcType=INTEGER},
+			</if>
+			<if test="seriesId != null and seriesId > 0">
+				series_id = #{seriesId,jdbcType=INTEGER},
+			</if>
+			<if test="name != null">
+				`name` = #{name,jdbcType=VARCHAR},
+			</if>
+			<if test="guidePrice != null">
+				guide_price = #{guidePrice,jdbcType=DECIMAL},
+			</if>
+			<if test="carSize != null">
+				car_size = #{carSize,jdbcType=VARCHAR},
+			</if>
+			<if test="carDoors != null and carDoors > 0">
+				car_doors = #{carDoors,jdbcType=INTEGER},
+			</if>
+			<if test="carSeats != null and carSeats > 0">
+				car_seats = #{carSeats,jdbcType=INTEGER},
+			</if>
+			<if test="displacement != null">
+				displacement = #{displacement,jdbcType=DECIMAL},
+			</if>
+			<if test="carHorsepower != null">
+				car_horsepower = #{carHorsepower,jdbcType=DECIMAL},
+			</if>
+			<if test="carEngineType != null">
+				car_engine_type = #{carEngineType,jdbcType=VARCHAR},
+			</if>
+			<if test="carDrivingWay != null">
+				car_driving_way = #{carDrivingWay,jdbcType=VARCHAR},
+			</if>
+			<if test="ownerFuelConsumption != null">
+				owner_fuel_consumption = #{ownerFuelConsumption,jdbcType=VARCHAR},
+			</if>
+			<if test="combinedFuelConsumption != null">
+				combined_fuel_consumption = #{combinedFuelConsumption,jdbcType=VARCHAR},
+			</if>
+			<if test="vehicleWarranty != null">
+				vehicle_warranty = #{vehicleWarranty,jdbcType=VARCHAR},
+			</if>
+			<if test="transmission != null">
+				transmission = #{transmission,jdbcType=VARCHAR},
+			</if>
+			<if test="ownerScore != null">
+				owner_score = #{ownerScore,jdbcType=DECIMAL},
+			</if>
+			<if test="isTurbo != null">
+				is_turbo = #{isTurbo,jdbcType=INTEGER},
+			</if>
+			<if test="carValue != null">
+				car_value = #{carValue,jdbcType=DECIMAL},
+			</if>
+			<if test="frontTyreSize != null">
+				front_tyre_size = #{frontTyreSize,jdbcType=VARCHAR},
+			</if>
+			<if test="rearTyreSize != null">
+				rear_tyre_size = #{rearTyreSize,jdbcType=VARCHAR},
+			</if>
+			<if test="modelWashType != null">
+				model_wash_type=#{modelWashType,jdbcType=INTEGER},
+			</if>
+			<if test="washType != null">
+			    wash_type=#{washType,jdbcType=INTEGER},
+			</if>
+			<if test="imgUrl != null">
+			    img_url=#{imgUrl,jdbcType=VARCHAR},
+			</if>
+			<if test="isValid != null">
+				isValid = #{isValid,jdbcType=INTEGER},
+			</if>
+			<if test="true">
+				modify_time = NOW()
+			</if>
+		</set>
+		WHERE id = #{id,jdbcType=INTEGER}
+	</update>
+
+	<update id="updateByAutoHomeId">
+		UPDATE car_model
+		<set>
+			<if test="seriesId != null and seriesId > 0">
+				series_id = #{seriesId,jdbcType=INTEGER},
+			</if>
+			<if test="name != null">
+				`name` = #{name,jdbcType=VARCHAR},
+			</if>
+			<if test="guidePrice != null">
+				guide_price = #{guidePrice,jdbcType=DECIMAL},
+			</if>
+			<if test="carSize != null">
+				car_size = #{carSize,jdbcType=VARCHAR},
+			</if>
+			<if test="carDoors != null and carDoors > 0">
+				car_doors = #{carDoors,jdbcType=INTEGER},
+			</if>
+			<if test="carSeats != null and carSeats > 0">
+				car_seats = #{carSeats,jdbcType=INTEGER},
+			</if>
+			<if test="displacement != null">
+				displacement = #{displacement,jdbcType=DECIMAL},
+			</if>
+			<if test="carHorsepower != null">
+				car_horsepower = #{carHorsepower,jdbcType=DECIMAL},
+			</if>
+			<if test="carEngineType != null">
+				car_engine_type = #{carEngineType,jdbcType=VARCHAR},
+			</if>
+			<if test="carDrivingWay != null">
+				car_driving_way = #{carDrivingWay,jdbcType=VARCHAR},
+			</if>
+			<if test="ownerFuelConsumption != null">
+				owner_fuel_consumption = #{ownerFuelConsumption,jdbcType=VARCHAR},
+			</if>
+			<if test="combinedFuelConsumption != null">
+				combined_fuel_consumption = #{combinedFuelConsumption,jdbcType=VARCHAR},
+			</if>
+			<if test="vehicleWarranty != null">
+				vehicle_warranty = #{vehicleWarranty,jdbcType=VARCHAR},
+			</if>
+			<if test="transmission != null">
+				transmission = #{transmission,jdbcType=VARCHAR},
+			</if>
+			<if test="ownerScore != null">
+				owner_score = #{ownerScore,jdbcType=DECIMAL},
+			</if>
+			<if test="isTurbo != null">
+				is_turbo = #{isTurbo,jdbcType=INTEGER},
+			</if>
+			<if test="carValue != null">
+				car_value = #{carValue,jdbcType=DECIMAL},
+			</if>
+			<if test="frontTyreSize != null">
+				front_tyre_size = #{frontTyreSize,jdbcType=VARCHAR},
+			</if>
+			<if test="rearTyreSize != null">
+				rear_tyre_size = #{rearTyreSize,jdbcType=VARCHAR},
+			</if>
+			<if test="modelWashType != null">
+				model_wash_type=#{modelWashType,jdbcType=INTEGER},
+			</if>
+			<if test="washType != null">
+				wash_type=#{washType,jdbcType=INTEGER},
+			</if>
+			<if test="imgUrl != null">
+				img_url=#{imgUrl,jdbcType=VARCHAR},
+			</if>
+			<if test="isValid != null">
+				isValid = #{isValid,jdbcType=INTEGER},
+			</if>
+			<if test="true">
+				modify_time = NOW()
+			</if>
+		</set>
+		WHERE auto_home_id = #{autoHomeId,jdbcType=INTEGER}
+	</update>
+
+	<sql id="page">
+		limit #{start},#{pageSize}
+	</sql>
+
+</mapper>
