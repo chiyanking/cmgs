@@ -1,8 +1,8 @@
 package com.zstu.bysj.cmgs.service.impl;
 
 import com.zstu.bysj.cmgs.service.AutoBrandService;
-import com.zstu.bysj.cmgs.service.spider.AutoBrandPageProcessor;
-import com.zstu.bysj.cmgs.service.spider.AutoBrandPipeLine;
+import com.zstu.bysj.cmgs.service.spider.AutoPageProcessor;
+import com.zstu.bysj.cmgs.service.spider.AutoPipeLine;
 import com.zstu.bysj.cmgs.service.spider.URLConfig;
 import org.junit.Test;
 import us.codecraft.webmagic.Spider;
@@ -15,10 +15,10 @@ public class CarUserServiceImplTest extends BaseTest {
     AutoBrandService autoBrandService;
 
     @Resource
-    AutoBrandPageProcessor brandPageProcessor;
+    AutoPageProcessor brandPageProcessor;
 
     @Resource
-    AutoBrandPipeLine brandPipeLine;
+    AutoPipeLine brandPipeLine;
 
     @Test
     public void save() throws Exception {
