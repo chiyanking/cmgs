@@ -44,11 +44,11 @@ public class AutoPageProcessor implements PageProcessor {
                 List<String> all = page.getHtml().xpath("//dl[@class='info']/dd/a[@uigs='jdcszdj']/text()").all();
                 if (all.size() == 1) {
                     String price = all.get(0);
-                    String[] lowHight = price.replace("万", "").split("-");
+                    String[] lowHigh = price.replace("万", "").split("-");
                     AutoModel autoModel = new AutoModel();
                     autoModel.setName(title.trim());
-                    autoModel.setLowPrice(new BigDecimal(Float.valueOf(lowHight[0]) * 10000));
-                    autoModel.setHighPrice(new BigDecimal(Float.valueOf(lowHight[1]) * 10000));
+                    autoModel.setLowPrice(new BigDecimal(Float.valueOf(lowHigh[0]) * 10000));
+                    autoModel.setHighPrice(new BigDecimal(Float.valueOf(lowHigh[1]) * 10000));
                     page.putField("autoModel", autoModel);
                 }
             }
